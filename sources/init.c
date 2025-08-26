@@ -45,9 +45,9 @@ static int	init_philos(t_env *env)
 
 int	init_table(t_env *env)
 {
-	if (!init_mutex(&env))
+	if (!init_mutex(env))
 		return (0);
-	if (!init_philos(&env))
+	if (!init_philos(env))
 		return (0);
 	return (1);
 }
