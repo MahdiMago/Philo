@@ -9,23 +9,43 @@
 /*   Updated: 2025/08/20 21:28:57 by mamagoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+ 
 #include "../includes/philo.h"
 
-void	*philosopher(void *idk)
+static int	check_param(int argc, char **argv, t_env *env)
 {
-	
-}
+	int i;
 
-int	set_the_table(int nb_p, int t_die, int t_eat, int t_sleep)
-{
-	
+	i = 0;
+	while (i < argc)
+	{
+		if (!ft_isint(argv[i]))
+			return (0);
+		if (ft_atoi(argv[i] < 0))
+			return (0);
+	}
+	env->count = ft_atoi(argv[1]);
+	env->time_to_die = ft_atoi(argv[2]);
+	env->time_to_eat = ft_atoi(argv[3]);
+	env->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		env->eat_count_max = ft_atoi(argv[5]);
+	else
+		env->eat_count_max = 0;
+	if (env->count < 0 || env->time_to_die < 0 || env->time_to_eat < 0
+		|| env->time_to_sleep < 0 || env->eat_count_max < 0)
+		return (0);
+	return (1);
 }
 
 int	main(int argc, char **argv)
 {
-	t_table	table;
+	t_env	env;
 	
-	if (check_argument(argc, argv) == 0)
-		return (error_return());
+	env.max_ate = 0;
+	env.stop_condition = 0;
+	if (!check_param(argc, argv, &env))
+		printf("Error\n");
+	if (!init_table(&env))
+		printf("Error of initialization");
 }

@@ -20,26 +20,42 @@
 # include <sys/time.h>
 # include <stdbool.h>
 
-# define MAX_PHILO 250
-
-typedef struct s_philosopher
+typedef struct s_env
 {
-	int		id;
-	int		meals_eaten;
-	time_t	last_meal;
-}	t_philosopher;
+	int				count;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				eat_count_max;
+	unsigned long	start_time;
+	int				stop_condition;
+	int				max_eat;
+	t_philo			*philos;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	meal;
+	pthread_mutex_t	writing;
+}				t_env;
 
-typedef struct s_table
+typedef struct s_philo
 {
-	time_t			start_time;
-	pthread_mutex_t	fork[MAX_PHILO];
-}	t_table;
+	int				eat_times;
+	int				pos;
+	char			*pos_str;
+	int				ffork;
+	int				sfork;
+	unsigned long	last_eat;
+	struct s_env	*env;
+	pthread_t		thread_id;
+}				t_philo;
 
-time_t	get_time_in_ms(void);
+time_t	get_time(void);
 int		add_value_f(int add);
 void	*thread_function(void *value);
 int		ft_atoi(const char *str);
-bool	check_argument(int ac, char **av);
-int		error_return(void);
+char	*ft_itoa(int n);
+int		ft_isint(const char *nptr);
+int		init_table(t_env *env);
+void	state_print(t_philo *philo, char *change, int unlock);
+void philo_sleep(unsigned long duration, t_env *env);
 
 #endif
