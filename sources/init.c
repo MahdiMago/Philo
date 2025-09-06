@@ -12,13 +12,31 @@ static int	init_mutex(t_env *env)
 	while (i < env->count)
 	{
 		if (pthread_mutex_init(&env->forks[i], NULL) != 0)
+		{
+			while (i-- > 0)
+				pthread_mutex_destroy(&env->forks[i]);
+			free(env->forks);
 			return (0);
+		}
 		i++;
 	}
 	if (pthread_mutex_init(&env->meal, NULL) != 0)
+	{
+		i = env->count;
+		while (i-- > 0)
+			pthread_mutex_destroy(&env->forks[i]);
+		free(env->forks);
 		return (0);
+	}
 	if (pthread_mutex_init(&env->writing, NULL) != 0)
+	{
+		pthread_mutex_destroy(&env->meal);
+		i = env->count;
+		while (i-- > 0)
+			pthread_mutex_destroy(&env->forks[i]);
+		free(env->forks);
 		return (0);
+	}
 	return (1);
 }
 
@@ -34,7 +52,14 @@ static int	init_philos(t_env *env)
 	{
 		env->philos[i].eat_times = 0;
 		env->philos[i].pos = i;
-		env->philos[i].pos_str = ft_itoa(i);
+		env->philos[i].pos_str = ft_itoa(i + 1);
+		if (!env->philos[i].pos_str)
+		{
+			while (i-- > 0)
+				free(env->philos[i].pos_str);
+			free(env->philos);
+			return (0);
+		}
 		env->philos[i].ffork = i;
 		env->philos[i].sfork = (i + 1) % env->count;
 		env->philos[i].env = env;

@@ -16,13 +16,16 @@ static int	check_param(int argc, char **argv, t_env *env)
 {
 	int i;
 
-	i = 0;
+	if (argc != 5 && argc != 6)
+		return (0);
+	i = 1;
 	while (i < argc)
 	{
 		if (!ft_isint(argv[i]))
 			return (0);
 		if (ft_atoi(argv[i]) < 0)
 			return (0);
+		i++;
 	}
 	env->count = ft_atoi(argv[1]);
 	env->time_to_die = ft_atoi(argv[2]);
@@ -45,9 +48,19 @@ int	main(int argc, char **argv)
 	env.max_eat = 0;
 	env.stop_condition = 0;
 	if (!check_param(argc, argv, &env))
+	{
 		printf("Error\n");
+		return (1);
+	}
 	if (!init_table(&env))
-		printf("Error of initialization");
+	{
+		printf("Error of initialization\n");
+		return (1);
+	}
 	if (!start_threads(&env))
-		printf("Error while making threads");
+	{
+		printf("Error while making threads\n");
+		return (1);
+	}
+	return (0);
 }

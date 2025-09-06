@@ -33,9 +33,9 @@ static void	free_threads(t_env *env)
 	i = -1;
 	while (++i < env->count)
 		pthread_mutex_destroy(&env->forks[i]);
-	pthread_mutex_destroy(&env->meal);
 	pthread_mutex_unlock(&env->writing);
 	pthread_mutex_destroy(&env->writing);
+	pthread_mutex_destroy(&env->meal);
 	i = -1;
 	while (++i < env->count)
 		free(env->philos[i].pos_str);
@@ -55,14 +55,14 @@ static void	monitor(t_env *env)
 			pthread_mutex_lock(&env->meal);
 			if ((get_time() - env->philos[i].last_eat) > (unsigned long)env->time_to_die)
 			{
-				state_print(&env->philos[i], "died", 0);
 				env->stop_condition = 1;
+				state_print(&env->philos[i], "died", 1);
 			}
 			pthread_mutex_unlock(&env->meal);
 		}
 		if (env->stop_condition)
 			break ;
-		i = -1;
+		i = 0;
 		while (i < env->count && env->eat_count_max
 			&& env->philos[i].eat_times >= env->eat_count_max)
 			i++;

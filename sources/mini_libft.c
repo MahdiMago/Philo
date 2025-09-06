@@ -97,6 +97,8 @@ int	ft_isint(const char *nptr)
 		neg = 1;
 	if (nptr[i] == '-' || nptr[i] == '+')
 		i++;
+	if (!(nptr[i] >= '0' && nptr[i] <= '9'))
+		return (0);
 	while (nptr[i] != '\0' && (nptr[i] >= 48 && nptr[i] <= 57))
 	{
 		if (value > 214748364 || (value == 214748364
@@ -105,5 +107,6 @@ int	ft_isint(const char *nptr)
 		else
 			value = (value * 10) + nptr[i++] - '0';
 	}
-	return (1);
+	/* must be end of string after digits */
+	return (nptr[i] == '\0');
 }

@@ -51,7 +51,7 @@ typedef struct s_env
 }				t_env;
 
 
-time_t	get_time(void);
+unsigned long	get_time(void);
 int		add_value_f(int add);
 void	*thread_function(void *value);
 int		ft_atoi(const char *str);

@@ -7,7 +7,7 @@ void	state_print(t_philo *philo, char *change, int unlock)
 
 	timestamp = ft_itoa(get_time() - philo->env->start_time);
 	pthread_mutex_lock(&philo->env->writing);
-	if (philo->env->stop_condition && !philo->env->max_eat)
+	if (!philo->env->stop_condition || (change && change[0] == 'd'))
 		printf("%s %s %s\n", timestamp, philo->pos_str, change);
 	if (unlock)
 		pthread_mutex_unlock(&philo->env->writing);
