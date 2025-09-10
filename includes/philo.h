@@ -6,7 +6,7 @@
 /*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:31:51 by mamagoma          #+#    #+#             */
-/*   Updated: 2025/08/20 21:23:45 by mamagoma         ###   ########.fr       */
+/*   Updated: 2025/09/06 20:25:26 by mamagoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/time.h>
 # include <stdbool.h>
 
-struct s_env;
+struct	s_env;
 
 typedef struct s_philo
 {
@@ -50,17 +50,16 @@ typedef struct s_env
 	pthread_mutex_t	writing;
 }				t_env;
 
-
 unsigned long	get_time(void);
-int		add_value_f(int add);
-void	*thread_function(void *value);
-int		ft_atoi(const char *str);
-char	*ft_itoa(int n);
-int		ft_isint(const char *nptr);
-int		init_table(t_env *env);
-void	state_print(t_philo *philo, char *change, int unlock);
-void	philo_sleep(unsigned long duration, t_env *env);
-int		start_threads(t_env *env);
-void	philo_eat(t_philo *philo);
+int				add_value_f(int add);
+void			*thread_function(void *value);
+int				ft_atoi(const char *str);
+char			*ft_itoa(int n);
+int				ft_isint(const char *nptr);
+int				init_table(t_env *env);
+void			state_print(t_philo *philo, char *change, int unlock);
+void			philo_sleep(unsigned long duration, t_env *env);
+int				start_threads(t_env *env);
+void			philo_eat(t_philo *philo);
 
 #endif

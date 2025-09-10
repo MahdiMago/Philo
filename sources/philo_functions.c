@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_functions.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/06 20:21:02 by mamagoma          #+#    #+#             */
+/*   Updated: 2025/09/10 19:09:19 by mamagoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/philo.h"
 
 void	state_print(t_philo *philo, char *change, int unlock)
 {
-	char *timestamp;
+	char	*timestamp;
 
 	timestamp = ft_itoa(get_time() - philo->env->start_time);
 	pthread_mutex_lock(&philo->env->writing);
@@ -14,7 +25,7 @@ void	state_print(t_philo *philo, char *change, int unlock)
 	free(timestamp);
 }
 
-void philo_sleep(unsigned long duration, t_env *env)
+void	philo_sleep(unsigned long duration, t_env *env)
 {
 	unsigned long	start;
 

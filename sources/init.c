@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/06 20:21:07 by mamagoma          #+#    #+#             */
+/*   Updated: 2025/09/06 20:24:39 by mamagoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/philo.h"
 
 static int	init_mutex(t_env *env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	env->forks = malloc(sizeof(pthread_mutex_t) * env->count);
@@ -42,7 +53,7 @@ static int	init_mutex(t_env *env)
 
 static int	init_philos(t_env *env)
 {
-	int i;
+	int	i;
 
 	env->philos = malloc(sizeof(t_philo) * env->count);
 	if (!env->philos)

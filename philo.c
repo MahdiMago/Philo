@@ -6,15 +6,15 @@
 /*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 15:19:57 by mamagoma          #+#    #+#             */
-/*   Updated: 2025/08/20 21:28:57 by mamagoma         ###   ########.fr       */
+/*   Updated: 2025/09/06 20:24:00 by mamagoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
- 
+
 #include "includes/philo.h"
 
 static int	check_param(int argc, char **argv, t_env *env)
 {
-	int i;
+	int	i;
 
 	if (argc != 5 && argc != 6)
 		return (0);
@@ -44,7 +44,7 @@ static int	check_param(int argc, char **argv, t_env *env)
 int	main(int argc, char **argv)
 {
 	t_env	env;
-	
+
 	env.max_eat = 0;
 	env.stop_condition = 0;
 	if (!check_param(argc, argv, &env))

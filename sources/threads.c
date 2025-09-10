@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/06 20:22:17 by mamagoma          #+#    #+#             */
+/*   Updated: 2025/09/10 20:47:41 by mamagoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/philo.h"
 
@@ -34,8 +45,8 @@ static void	free_threads(t_env *env)
 	while (++i < env->count)
 		pthread_mutex_destroy(&env->forks[i]);
 	pthread_mutex_unlock(&env->writing);
-	pthread_mutex_destroy(&env->writing);
 	pthread_mutex_destroy(&env->meal);
+	pthread_mutex_destroy(&env->writing);
 	i = -1;
 	while (++i < env->count)
 		free(env->philos[i].pos_str);
@@ -53,15 +64,17 @@ static void	monitor(t_env *env)
 		while (++i < env->count)
 		{
 			pthread_mutex_lock(&env->meal);
-			if ((get_time() - env->philos[i].last_eat) > (unsigned long)env->time_to_die)
+			if ((get_time() - env->philos[i].last_eat)
+				> (unsigned long)env->time_to_die)
 			{
+				state_print(&env->philos[i], "died", 0);
 				env->stop_condition = 1;
-				state_print(&env->philos[i], "died", 1);
+
 			}
 			pthread_mutex_unlock(&env->meal);
+			if (env->stop_condition)
+				return ;
 		}
-		if (env->stop_condition)
-			break ;
 		i = 0;
 		while (i < env->count && env->eat_count_max
 			&& env->philos[i].eat_times >= env->eat_count_max)
@@ -80,10 +93,11 @@ int	start_threads(t_env *env)
 	{
 		env->philos[i].last_eat = get_time();
 		if (pthread_create(&env->philos[i].thread_id,
-			NULL, routine, &env->philos[i]) != 0)
+				NULL, routine, &env->philos[i]) != 0)
 			return (0);
 	}
 	monitor(env);
+	env->stop_condition = 1;
 	free_threads(env);
 	return (1);
 }
