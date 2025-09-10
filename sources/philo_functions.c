@@ -16,6 +16,8 @@ void	state_print(t_philo *philo, char *change, int unlock)
 {
 	char	*timestamp;
 
+	if (philo->env->stop_condition)
+		return ;
 	timestamp = ft_itoa(get_time() - philo->env->start_time);
 	pthread_mutex_lock(&philo->env->writing);
 	if (!philo->env->stop_condition || (change && change[0] == 'd'))
