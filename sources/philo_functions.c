@@ -6,7 +6,7 @@
 /*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 20:21:02 by mamagoma          #+#    #+#             */
-/*   Updated: 2025/09/10 19:09:19 by mamagoma         ###   ########.fr       */
+/*   Updated: 2025/09/11 21:12:07 by mamagoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,19 @@ void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->env->forks[philo->ffork]);
 	state_print(philo, "has taken a fork", 1);
-	pthread_mutex_lock(&philo->env->forks[philo->sfork]);
-	state_print(philo, "has taken a fork", 1);
-	pthread_mutex_lock(&philo->env->meal);
-	state_print(philo, "is eating", 1);
-	philo->last_eat = get_time();
-	pthread_mutex_unlock(&philo->env->meal);
-	philo_sleep(philo->env->time_to_eat, philo->env);
-	philo->eat_times++;
-	pthread_mutex_unlock(&philo->env->forks[philo->ffork]);
-	pthread_mutex_unlock(&philo->env->forks[philo->sfork]);
+	if (philo->env->count > 1)
+	{
+		pthread_mutex_lock(&philo->env->forks[philo->sfork]);
+		state_print(philo, "has taken a fork", 1);
+		pthread_mutex_lock(&philo->env->meal);
+		state_print(philo, "is eating", 1);
+		philo->last_eat = get_time();
+		pthread_mutex_unlock(&philo->env->meal);
+		philo_sleep(philo->env->time_to_eat, philo->env);
+		philo->eat_times++;
+		pthread_mutex_unlock(&philo->env->forks[philo->ffork]);
+		pthread_mutex_unlock(&philo->env->forks[philo->sfork]);
+	}
+	else
+		philo_sleep((philo->env->time_to_die + 10), philo->env);
 }

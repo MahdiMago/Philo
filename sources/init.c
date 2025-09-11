@@ -6,11 +6,33 @@
 /*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 20:21:07 by mamagoma          #+#    #+#             */
-/*   Updated: 2025/09/06 20:24:39 by mamagoma         ###   ########.fr       */
+/*   Updated: 2025/09/11 19:36:01 by mamagoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static int	init_mutex_2(t_env *env, int i)
+{
+	if (pthread_mutex_init(&env->meal, NULL) != 0)
+	{
+		i = env->count;
+		while (i-- > 0)
+			pthread_mutex_destroy(&env->forks[i]);
+		free(env->forks);
+		return (0);
+	}
+	if (pthread_mutex_init(&env->writing, NULL) != 0)
+	{
+		pthread_mutex_destroy(&env->meal);
+		i = env->count;
+		while (i-- > 0)
+			pthread_mutex_destroy(&env->forks[i]);
+		free(env->forks);
+		return (0);
+	}
+	return (1);
+}
 
 static int	init_mutex(t_env *env)
 {
@@ -31,23 +53,8 @@ static int	init_mutex(t_env *env)
 		}
 		i++;
 	}
-	if (pthread_mutex_init(&env->meal, NULL) != 0)
-	{
-		i = env->count;
-		while (i-- > 0)
-			pthread_mutex_destroy(&env->forks[i]);
-		free(env->forks);
+	if (!init_mutex_2(env, i))
 		return (0);
-	}
-	if (pthread_mutex_init(&env->writing, NULL) != 0)
-	{
-		pthread_mutex_destroy(&env->meal);
-		i = env->count;
-		while (i-- > 0)
-			pthread_mutex_destroy(&env->forks[i]);
-		free(env->forks);
-		return (0);
-	}
 	return (1);
 }
 

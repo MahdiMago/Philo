@@ -6,7 +6,7 @@
 /*   By: mamagoma <mamagoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 20:22:17 by mamagoma          #+#    #+#             */
-/*   Updated: 2025/09/10 20:47:41 by mamagoma         ###   ########.fr       */
+/*   Updated: 2025/09/11 19:57:31 by mamagoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	free_threads(t_env *env)
 	int	i;
 
 	if (env->count == 1)
-		pthread_detach(env->philos[0].thread_id);
+		pthread_join(env->philos[0].thread_id, NULL);
 	else
 	{
 		i = -1;
@@ -69,7 +69,6 @@ static void	monitor(t_env *env)
 			{
 				state_print(&env->philos[i], "died", 0);
 				env->stop_condition = 1;
-
 			}
 			pthread_mutex_unlock(&env->meal);
 			if (env->stop_condition)
